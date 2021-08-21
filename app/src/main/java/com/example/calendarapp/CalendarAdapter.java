@@ -1,6 +1,7 @@
 package com.example.calendarapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,28 +10,26 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 public class CalendarAdapter extends RecyclerView.Adapter {
 
+    private Context mContext;
     private String[] dayList;
     private int year;
     private int month;
-
-//    public interface OnItemClickListener {
-//        void onItemClick(View v, int position) ;
-//    }
-//
-//    private OnItemClickListener mListener = null ;
-//
-//    public void setOnItemClickListener(OnItemClickListener listener) {
-//        this.mListener = listener ;
-//    }
+    private int emptyDay;
+    private ArrayList<Memo> memoList;
 
 
-    public CalendarAdapter(String[] dayList, int year, int month)
+    public CalendarAdapter(Context context, String[] dayList, int year, int month, int emptyDay, ArrayList<Memo> memoList)
     {
         this.dayList = dayList;
         this.year = year;
         this.month = month;
+        this.mContext = context;
+        this.emptyDay = emptyDay-1;
+        this.memoList = memoList;
     }
 
     @NonNull
@@ -49,8 +48,13 @@ public class CalendarAdapter extends RecyclerView.Adapter {
         String day_text = dayList[position];
         DateViewHolder dateViewHolder = (DateViewHolder)holder;
         dateViewHolder.day_item.setText(day_text);
+        String today = year + "-" + month + "-" + day_text;
 
-
+        for(Memo m : memoList){
+            if(m.getDate().equals(today)){
+                dateViewHolder.day_item.setText(m.getContent());
+            }
+        }
     }
 
     @Override
@@ -75,9 +79,12 @@ public class CalendarAdapter extends RecyclerView.Adapter {
                     if (pos != RecyclerView.NO_POSITION) {
                         // 리스너 객체의 메서드 호출.
 
-                        dayList[pos] = year + "/" + month + "/" + pos;
+                        Intent intent = new Intent(mContext, MemoWriteFormActivity.class);
+                        intent.putExtra("month", month);
+                        intent.putExtra("year", year);
+                        intent.putExtra("day", pos-emptyDay);
 
-                        notifyItemChanged(pos);
+                        mContext.startActivity(intent);
                     }
                 }
             });
