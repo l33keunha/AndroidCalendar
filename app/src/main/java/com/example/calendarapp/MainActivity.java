@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
+        DatabaseReference myRef = database.getReference("USER01");
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override

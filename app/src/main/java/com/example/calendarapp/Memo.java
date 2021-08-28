@@ -2,25 +2,15 @@ package com.example.calendarapp;
 
 public class Memo {
 
-    private String user;
     private String date;
     private String content;
 
 
     public Memo(){}
 
-    public Memo(String user, String date, String content) {
-        this.user = user;
+    public Memo(String date, String content) {
         this.date = date;
         this.content = content;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
     }
 
     public String getDate() {
@@ -42,8 +32,7 @@ public class Memo {
     @Override
     public String toString() {
         return "Memo{" +
-                "user='" + user + '\'' +
-                ", date='" + date + '\'' +
+                "date='" + date + '\'' +
                 ", content='" + content + '\'' +
                 '}';
     }

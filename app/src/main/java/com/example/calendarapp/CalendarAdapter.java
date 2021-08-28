@@ -52,7 +52,7 @@ public class CalendarAdapter extends RecyclerView.Adapter {
 
         for(Memo m : memoList){
             if(m.getDate().equals(today)){
-                dateViewHolder.day_item.setText(m.getContent());
+                dateViewHolder.diary_item.setText(m.getContent());
             }
         }
     }
@@ -65,11 +65,13 @@ public class CalendarAdapter extends RecyclerView.Adapter {
 
     public class DateViewHolder extends RecyclerView.ViewHolder {
         TextView day_item;
+        TextView diary_item;
 
         public DateViewHolder(@NonNull View itemView) {
             super(itemView);
 
             day_item = itemView.findViewById(R.id.day_item);
+            diary_item = itemView.findViewById(R.id.diary_item);
 
             itemView.setOnClickListener(new View.OnClickListener(){
 
@@ -79,12 +81,20 @@ public class CalendarAdapter extends RecyclerView.Adapter {
                     if (pos != RecyclerView.NO_POSITION) {
                         // 리스너 객체의 메서드 호출.
 
+
                         Intent intent = new Intent(mContext, MemoWriteFormActivity.class);
                         intent.putExtra("month", month);
                         intent.putExtra("year", year);
                         intent.putExtra("day", pos-emptyDay);
 
-                        mContext.startActivity(intent);
+                        if(diary_item.getText().toString().equals("")){
+                            mContext.startActivity(intent);
+                        } else {
+                            intent.putExtra("memoContent", diary_item.getText().toString());
+                            mContext.startActivity(intent);
+                        }
+
+
                     }
                 }
             });
